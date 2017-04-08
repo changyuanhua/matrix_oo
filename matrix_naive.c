@@ -1,5 +1,6 @@
 #include "matrix.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 struct naive_priv {
     float values[4][4];
@@ -31,7 +32,7 @@ static bool equal(const Matrix *l, const Matrix *r)
     return true;
 }
 
-bool mul(Matrix *dst, const Matrix *l, const Matrix *r)
+static bool mul(Matrix *dst, const Matrix *l, const Matrix *r)
 {
     /* FIXME: error hanlding */
     dst->priv = malloc(4 * 4 * sizeof(float));
@@ -43,8 +44,19 @@ bool mul(Matrix *dst, const Matrix *l, const Matrix *r)
     return true;
 }
 
+void print_matrix(Matrix *thiz)
+{
+    printf("matrix:\n");
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++)
+            printf(" %4g ", PRIV(thiz)->values[i][j]);
+        printf("\n");
+    }
+}
+
 MatrixAlgo NaiveMatrixProvider = {
     .assign = assign,
     .equal = equal,
     .mul = mul,
+    .print_matrix = print_matrix,
 };
